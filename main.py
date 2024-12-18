@@ -12,25 +12,36 @@ BASE_URL = 'https://newsapi.org/v2/top-headlines'
 
 # Paramètres pour la requête
 params = {
-    'country': 'fr',  # Pays (ici France)
-    'launguage': 'fr',
-    'category': 'technology',  # Catégorie (ex. technology, business, etc.)
-    'apiKey': API_KEY  # Votre clé API
+    'category': 'health',
+    'language': 'en',  # Langue française
+    'sortBy': 'relevancy',  # Trier par pertinence
+    'apiKey': API_KEY  # API Key
 }
 
 # Faire une requête GET
 response = requests.get(BASE_URL, params=params)
 
-# Vérifier si la requête a réussi
-if response.status_code == 200:
-    # Décoder le JSON de la réponse
+if response:
     data = response.json()
     articles = data.get('articles', [])
+    number = 0
     
-    # Afficher les titres des articles
-    for idx, article in enumerate(articles):
-        print(f"{idx + 1}. {article['title']}")
+    # Récupérer uniquement les titres et descriptions
+    with open('articles.txt', 'w', encoding='utf-8') as file:
+        for idx, article in enumerate(articles):
+            title = article.get('title', 'Title not found')
+            author = article.get('author', 'author not found')
+            description = article.get('description', 'Description not found')
+            publishedAt = article.get('publishedAt', 'publishedAt not found')
+            url = article.get('url', 'url not found')
+            file.write(f"{idx + 1}. Titre: {title}\n")
+            number = number + 1
+            file.write(f"   Author: {author}\n")
+            file.write(f"   Description: {description}\n")
+            file.write(f"   Published at: {publishedAt}\n")
+            file.write(f"   Url: {url}\n\n")
+    
+    print(f"{number} articles found")
+    
 else:
-    # Gérer les erreurs
-    print(f"Erreur: {response.status_code}")
-    print(response.text)
+    print(f"Error{response.status_code}")
