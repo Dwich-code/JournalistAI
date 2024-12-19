@@ -1,17 +1,19 @@
 import os
 import requests
 from dotenv import load_dotenv
-import tkinter as tk
-from tkinter import ttk
+import pyttsx3
 
 load_dotenv()  # Charger le contenu du fichier .env
 
 API_KEY = os.getenv("API_KEY") # API KEY
 BASE_URL = 'https://newsapi.org/v2/top-headlines' # URL
+ENGINE = pyttsx3.init()
 
 # Paramètres pour la requête
 params = {
-    
+    'pageSize': '1',
+    'sortBy': 'publishedAt',
+    'category': "technology",
     'apiKey': API_KEY  # API Key
 }
 
@@ -37,6 +39,10 @@ if response:
             file.write(f"   Description: {description}\n")
             file.write(f"   Published at: {publishedAt}\n")
             file.write(f"   Url: {url}\n\n")
+            text1 = title
+            text2 = description
+            ENGINE.say(f"Article number {number}.{title}, by {author}. {description}. For mor information go visit {url}")
+            ENGINE.runAndWait()
     
     print(f"{number} articles found")
     
