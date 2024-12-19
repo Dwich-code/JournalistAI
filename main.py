@@ -1,20 +1,17 @@
+import os
 import requests
 from dotenv import load_dotenv
-import os
+import tkinter as tk
+from tkinter import ttk
 
 load_dotenv()  # Charger le contenu du fichier .env
 
-# Votre clé API
-API_KEY = os.getenv("API_KEY")
-
-# URL de base de l'API
-BASE_URL = 'https://newsapi.org/v2/top-headlines'
+API_KEY = os.getenv("API_KEY") # API KEY
+BASE_URL = 'https://newsapi.org/v2/top-headlines' # URL
 
 # Paramètres pour la requête
 params = {
-    'category': 'health',
-    'language': 'en',  # Langue française
-    'sortBy': 'relevancy',  # Trier par pertinence
+    
     'apiKey': API_KEY  # API Key
 }
 
